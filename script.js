@@ -18,6 +18,20 @@ closeModalButton[0].addEventListener("click", function () {
   modalContainer.classList.toggle("hidden");
 });
 
+jirasArray = [];
+
+const jiraTitles = [
+  "Create a public repository under your GitHub account",
+  "Create a new script file, and import it into index.html and add a console log",
+  "JavaScript: Variables",
+  "JavaScript: Event Listeners - Add Toggle Button Inside of Modal",
+  "JavaScript: Functions - Write a function to toggle hidden class on modal",
+];
+
+for (i = 0; i < jiraTitles.length; i++) {
+  console.log(jiraTitles[i]);
+}
+
 const jiraLinks = [
   "https://totalwine.atlassian.net/browse/TT-2",
   "https://totalwine.atlassian.net/browse/TT-16",
@@ -29,19 +43,6 @@ const jiraLinks = [
 for (i = 0; i < jiraLinks.length; i++) {
   console.log(jiraLinks[i]);
 }
-
-const jiraTitles = [
-  "Create a public repository under your GitHub account",
-  "Create a new script file, and import it into index.html and add a console log",
-  "JavaScript: Variables",
-  "JavaScript: Event Listeners - Add Toggle Button Inside of Modal",
-  "JavaScript: Functions - Write a function to toggle hidden class on modal",
-];
-
-for (i = 0; i < jiraTitles.length; i++) {
-    console.log(jiraTitles[i]);
-  }
-  
 
 // console.log("jiraTitles", jiraTitles);
 // console.log("jiraLinks", jiraLinks);
