@@ -18,7 +18,6 @@ closeModalButton[0].addEventListener("click", function () {
   modalContainer.classList.toggle("hidden");
 });
 
-jirasArray = [];
 
 const jiraTitles = [
   "Create a public repository under your GitHub account",
@@ -28,10 +27,6 @@ const jiraTitles = [
   "JavaScript: Functions - Write a function to toggle hidden class on modal",
 ];
 
-for (i = 0; i < jiraTitles.length; i++) {
-  console.log(jiraTitles[i]);
-}
-
 const jiraLinks = [
   "https://totalwine.atlassian.net/browse/TT-2",
   "https://totalwine.atlassian.net/browse/TT-16",
@@ -40,9 +35,17 @@ const jiraLinks = [
   "https://totalwine.atlassian.net/browse/TT-19",
 ];
 
-for (i = 0; i < jiraLinks.length; i++) {
-  console.log(jiraLinks[i]);
+jirasArray = [];
+
+for (let i = 0; i < jiraTitles.length; i++) {
+  jirasArray.push({
+    title: jiraTitles[i],
+    link: jiraLinks[i]
+  })
 }
 
-// console.log("jiraTitles", jiraTitles);
-// console.log("jiraLinks", jiraLinks);
+// jiraTitles.forEach((ele, i) => {
+//   jirasArray[ele] = jiraLinks[i]
+// })
+
+console.log(jirasArray);
