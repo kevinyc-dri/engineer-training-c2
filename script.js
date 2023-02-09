@@ -38,14 +38,16 @@ const jiraLinks = [
 jirasArray = [];
 
 for (let i = 0; i < jiraTitles.length; i++) {
-  jirasArray.push({
+  const arrayOfObjects = [{
     title: jiraTitles[i],
     link: jiraLinks[i]
-  })
+  }]
+
+  jirasArray.push(arrayOfObjects)
+
 }
+console.log(jirasArray)
 
-// jiraTitles.forEach((ele, i) => {
-//   jirasArray[ele] = jiraLinks[i]
-// })
+const listElement = document.getElementsByClassName('grid-container')
 
-console.log(jirasArray);
+
