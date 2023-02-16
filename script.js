@@ -35,17 +35,25 @@ const jiraLinks = [
   "https://totalwine.atlassian.net/browse/TT-19",
 ];
 
-jirasArray = [];
+let jirasArray = [];
 
 for (let i = 0; i < jiraTitles.length; i++) {
-  const arrayOfObjects = [{
+  const jiraObject = ({
     title: jiraTitles[i],
     link: jiraLinks[i]
-  }]
+  })
 
-  jirasArray.push(arrayOfObjects)
+  jirasArray.push(jiraObject)
 
 }
+
+// for (let i = 0; i < jiraLinks.length; i++) {
+//   jirasArray.push({
+//     link: jiraLinks[i],
+//     title: jiraTitles[i]
+//   });
+// }
+
 console.log(jirasArray)
 
 const listElement = document.getElementsByClassName('grid-container')
