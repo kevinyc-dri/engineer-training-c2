@@ -1,7 +1,9 @@
 console.log("Engineering Training C2");
+
 const modalButton = document.getElementById("modalButton");
 const modalContainer = document.getElementById("modalContainer");
 const closeModalButton = document.getElementsByClassName("close-modal-button");
+const listElement = document.querySelector('.grid-container')
 
 console.log("closeModalButton", closeModalButton);
 
@@ -35,7 +37,7 @@ const jiraLinks = [
   "https://totalwine.atlassian.net/browse/TT-19",
 ];
 
-let jirasArray = [];
+let jirasArray = []
 
 for (let i = 0; i < jiraTitles.length; i++) {
   const jiraObject = ({
@@ -47,15 +49,18 @@ for (let i = 0; i < jiraTitles.length; i++) {
 
 }
 
-// for (let i = 0; i < jiraLinks.length; i++) {
-//   jirasArray.push({
-//     link: jiraLinks[i],
-//     title: jiraTitles[i]
-//   });
-// }
-
 console.log(jirasArray)
 
-const listElement = document.getElementsByClassName('grid-container')
+
+jirasArray.forEach(() => {
+  const listItem = document.createElement('li')
+  listElement.prepend(listItem)
+})
+
+
+
+
+
+
 
 
