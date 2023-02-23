@@ -1,9 +1,9 @@
 console.log("Engineering Training C2");
 
-const modalButton = document.getElementById("modalButton");
+const modalButton = document.getElementById("modalButton"); // # w/querySelector
 const modalContainer = document.getElementById("modalContainer");
 const closeModalButton = document.getElementsByClassName("close-modal-button");
-const listElement = document.querySelector('.grid-container')
+const listElement = document.querySelector('.grid-container') 
 
 console.log("closeModalButton", closeModalButton);
 
@@ -39,7 +39,8 @@ const jiraLinks = [
 
 let jirasArray = []
 
-for (let i = 0; i < jiraTitles.length; i++) {
+
+for (let i = 0; i < 5; i++) {
   const jiraObject = ({
     title: jiraTitles[i],
     link: jiraLinks[i]
