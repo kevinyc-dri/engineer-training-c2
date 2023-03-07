@@ -12,6 +12,7 @@ console.log("modalButton", modalButton);
 modalButton.addEventListener("click", function () {
   console.log("clicked button!");
   modalContainer.classList.toggle("hidden");
+  loadData()
 });
 
 closeModalButton[0].addEventListener("click", function () {
@@ -59,6 +60,12 @@ jirasArray.forEach(e => {
   listElement.prepend(listItem)
 })
 
+function loadData() {
+  setTimeout(() => {
+    console.log("data loaded")
+  }, 1000)
+
+}
 
 
 
