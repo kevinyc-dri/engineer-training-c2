@@ -54,14 +54,18 @@ for (let i = 0; i < 5; i++) {
 console.log(jirasArray)
 
 
-jirasArray.forEach(e => {
-  const listItem = document.createElement('li')
-  listItem.innerHTML = `<li class="grid-container"><i class="bi bi-check-circle-fill"></i><a href="${e.link}">${e.title}</a>`;
-  listElement.prepend(listItem)
-})
+function renderData(){
+  jirasArray.forEach(e => {
+    const listItem = document.createElement('li')
+    listItem.innerHTML = `<li class="grid-container"><i class="bi bi-check-circle-fill"></i><a href="${e.link}">${e.title}</a>`;
+    listElement.prepend(listItem)
+  })
+}
 
 function loadData() {
   setTimeout(() => {
+    modalContainer.classList.toggle("hidden")
+    renderData()
     console.log("data loaded")
   }, 1000)
 
