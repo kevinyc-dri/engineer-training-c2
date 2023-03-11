@@ -64,7 +64,6 @@ function renderData(){
 
 function loadData() {
   setTimeout(() => {
-    modalContainer.classList.toggle("hidden")
     renderData()
     console.log("data loaded")
   }, 1000)
