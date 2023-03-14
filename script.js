@@ -55,11 +55,16 @@ console.log(jirasArray)
 
 
 function renderData(){
+  let response = ''
+  const listItem = document.createElement('li')
   jirasArray.forEach(e => {
-    const listItem = document.createElement('li')
-    listItem.innerHTML = `<li class="grid-container"><i class="bi bi-check-circle-fill"></i><a href="${e.link}">${e.title}</a>`;
-    listElement.prepend(listItem)
+    response += 
+    `<li>
+      <i class="bi bi-check-circle-fill"></i>
+      <a href="${e.link}">${e.title}</a>;
+    </li>`
   })
+  listElement.innerHTML = response;
 }
 
 function loadData() {
@@ -76,3 +81,6 @@ function loadData() {
 
 
 
+
+// listItem.innerHTML = `<li class="grid-container"><i class="bi bi-check-circle-fill"></i><a href="${e.link}">${e.title}</a>`;
+// listElement.prepend(listItem)
