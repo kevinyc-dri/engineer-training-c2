@@ -17,7 +17,6 @@ modalButton.addEventListener("click", function () {
 
 closeModalButton[0].addEventListener("click", function () {
   console.log("clicked close modal button!");
-  const modalContainer = document.getElementById("modalContainer");
 });
 
 
@@ -56,7 +55,6 @@ console.log(jirasArray)
 function renderData(){
   return new Promise((resolve) => {
     let response = ''
-    const listItem = document.createElement('li')
     jirasArray.forEach(e => {
       response += 
       `<li>
@@ -70,12 +68,13 @@ function renderData(){
 }
 
 function loadData() {
+  const gridContainer = document.querySelector('.grid-container')
   setTimeout(() => {
     renderData().then((response) => {
-      listElement.innerHTML = response;
+      gridContainer.innerHTML = response;
       modalContainer.classList.toggle("hidden");
     })
-    console.log("data loaded")
+    console.log("Data loaded")
   }, 1000)
 
 }
