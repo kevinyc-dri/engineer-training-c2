@@ -18,7 +18,6 @@ modalButton.addEventListener("click", function () {
 closeModalButton[0].addEventListener("click", function () {
   console.log("clicked close modal button!");
   const modalContainer = document.getElementById("modalContainer");
-  modalContainer.classList.toggle("hidden");
 });
 
 
@@ -55,21 +54,27 @@ console.log(jirasArray)
 
 
 function renderData(){
-  let response = ''
-  const listItem = document.createElement('li')
-  jirasArray.forEach(e => {
-    response += 
-    `<li>
-      <i class="bi bi-check-circle-fill"></i>
-      <a href="${e.link}">${e.title}</a>;
-    </li>`
+  return new Promise((resolve) => {
+    let response = ''
+    const listItem = document.createElement('li')
+    jirasArray.forEach(e => {
+      response += 
+      `<li>
+        <i class="bi bi-check-circle-fill"></i>
+        <a href="${e.link}">${e.title}</a>;
+      </li>`
+    })
+    resolve(response)
+    
   })
-  listElement.innerHTML = response;
 }
 
 function loadData() {
   setTimeout(() => {
-    renderData()
+    renderData().then((response) => {
+      listElement.innerHTML = response;
+      modalContainer.classList.toggle("hidden");
+    })
     console.log("data loaded")
   }, 1000)
 
