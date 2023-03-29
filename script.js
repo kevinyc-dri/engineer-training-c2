@@ -10,6 +10,9 @@ console.log("closeModalButton", closeModalButton);
 console.log("modalButton", modalButton);
 
 modalButton.addEventListener("click", function () {
+  if (dataLoaded === true) {
+    return loadData
+  }
   console.log("clicked button!");
   modalContainer.classList.toggle("hidden");
   loadData()
@@ -68,10 +71,13 @@ function renderData(){
   })
 }
 
+let dataLoaded = false
+
 function loadData() {
   const gridContainer = document.querySelector('.grid-container')
   setTimeout(() => {
     renderData().then((response) => {
+      dataLoaded = true
       gridContainer.innerHTML = response;
       modalContainer.classList.toggle("hidden");
     })
