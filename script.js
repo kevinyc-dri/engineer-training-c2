@@ -10,12 +10,12 @@ console.log("closeModalButton", closeModalButton);
 console.log("modalButton", modalButton);
 
 modalButton.addEventListener("click", function () {
-  if (dataLoaded === true) {
-    return loadData
+  if (dataLoaded) {
+    return this.loadData // Friday discussion different ways
   }
   console.log("clicked button!");
-  modalContainer.classList.toggle("hidden");
-  loadData()
+  modalContainer.classList.remove("hidden");
+  utils.loadData()
 });
 
 closeModalButton[0].addEventListener("click", function () {
@@ -55,36 +55,40 @@ for (let i = 0; i < 5; i++) {
 console.log(jirasArray)
 
 
-function renderData(){
-  return new Promise((resolve) => {
-    let response = ''
-    jirasArray.forEach(e => {
-      const {link, title} = e
-      response += 
-      `<li>
-        <i class="bi bi-check-circle-fill"></i>
-        <a href="${link}">${title}</a>;
-      </li>`
+const utils = {
+  renderData(){
+    return new Promise((resolve) => {
+      let response = ''
+      jirasArray.forEach(e => {
+        const {link, title} = e
+        response += 
+        `<li>
+          <i class="bi bi-check-circle-fill"></i>
+          <a href="${link}">${title}</a>;
+        </li>`
+      })
+      resolve(response)
     })
-    resolve(response)
-    
-  })
+  },
+  loadData() {
+    const gridContainer = document.querySelector('.grid-container')
+    setTimeout(() => {
+      this.renderData().then((response) => {
+        dataLoaded = true
+        gridContainer.innerHTML = response;
+        modalContainer.classList.add("hidden");
+      })
+      console.log("Data loaded")
+    }, 1000)
+  
+  }
 }
+
 
 let dataLoaded = false
 
-function loadData() {
-  const gridContainer = document.querySelector('.grid-container')
-  setTimeout(() => {
-    renderData().then((response) => {
-      dataLoaded = true
-      gridContainer.innerHTML = response;
-      modalContainer.classList.toggle("hidden");
-    })
-    console.log("Data loaded")
-  }, 1000)
 
-}
+
 
 
 
