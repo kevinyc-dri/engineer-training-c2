@@ -54,6 +54,15 @@ for (let i = 0; i < 5; i++) {
 
 console.log(jirasArray)
 
+class JiraHandler {
+  constructor(titles, links) {
+    this.titles = titles;
+    this.links = links
+  }
+} 
+
+const jiraHandler = new JiraHandler(jiraTitles, jiraLinks);
+
 
 const utils = {
   renderData(){
