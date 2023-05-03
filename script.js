@@ -39,25 +39,23 @@ const jiraLinks = [
   "https://totalwine.atlassian.net/browse/TT-19",
 ];
 
-let jirasArray = []
-
-
-for (let i = 0; i < 5; i++) {
-  const jiraObject = ({
-    title: jiraTitles[i],
-    link: jiraLinks[i]
-  })
-
-  jirasArray.push(jiraObject)
-
-}
-
-console.log(jirasArray)
-
 class JiraHandler {
-  constructor(titles, links) {
+  constructor(links, titles) {
+    this.links = links;
     this.titles = titles;
-    this.links = links
+    this.jiraObject = this.createJiraObject();
+  }
+  createJiraObject(){
+    let jirasArray = []; 
+    console.log(jirasArray)
+    for (let i = 0; i < this.titles.length; i++) {
+      const jiraObject = {
+        title: this.titles[i],
+        link: this.links[i]
+      };
+      jirasArray.push(jiraObject)
+    }
+    return jirasArray
   }
 } 
 
@@ -68,7 +66,7 @@ const utils = {
   renderData(){
     return new Promise((resolve) => {
       let response = ''
-      jirasArray.forEach(e => {
+      jiraHandler.jiraObject.forEach(e => {
         const {link, title} = e
         response += 
         `<li>
@@ -93,16 +91,7 @@ const utils = {
   }
 }
 
-
 let dataLoaded = false
-
-
-
-
-
-
-
-
 
 
 
