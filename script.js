@@ -47,13 +47,16 @@ class JiraHandler {
   }
   createJiraObject(){
     let jirasArray = []; 
+    const jiraTemplate = {
+      icon: "bi bi-check-circle-fill"
+    }
     console.log(jirasArray)
     for (let i = 0; i < this.titles.length; i++) {
       const jiraObject = {
         title: this.titles[i],
-        link: this.links[i]
+        link: this.links[i],
       };
-      jirasArray.push(jiraObject)
+      jirasArray.push({...jiraTemplate,...jiraObject})
     }
     return jirasArray
   }
@@ -61,16 +64,15 @@ class JiraHandler {
 
 const jiraHandler = new JiraHandler(jiraTitles, jiraLinks);
 
-
 const utils = {
   renderData(){
     return new Promise((resolve) => {
       let response = ''
       jiraHandler.jiraObject.forEach(e => {
-        const {link, title} = e
+        const {link, title, icon} = e
         response += 
         `<li>
-          <i class="bi bi-check-circle-fill"></i>
+          <i class="${icon}"></i>
           <a href="${link}">${title}</a>;
         </li>`
       })
