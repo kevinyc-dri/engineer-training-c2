@@ -47,16 +47,25 @@ class JiraHandler {
   }
   createJiraObject(){
     let jirasArray = []; 
-    const jiraTemplate = {
-      icon: "bi bi-check-circle-fill"
-    }
+    const jiraTemplate = { icon: "bi bi-check-circle-fill" }
+
+    const errorJiraTemplate = { icon: "bi bi-x-circle"}
+
+    function getRandomNumber() {
+      return Math.floor(Math.random() * 3);
+  }
+  
+
     console.log(jirasArray)
     for (let i = 0; i < this.titles.length; i++) {
       const jiraObject = {
         title: this.titles[i],
         link: this.links[i],
       };
-      jirasArray.push({...jiraTemplate,...jiraObject})
+      const useErrorTemplate = getRandomNumber() === 0;
+      const template = useErrorTemplate ? errorJiraTemplate : jiraTemplate;
+     
+      jirasArray.push({...jiraTemplate,...jiraObject,...template})
     }
     return jirasArray
   }
