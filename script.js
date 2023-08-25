@@ -1,3 +1,4 @@
+(async function() {
 console.log("Engineering Training C2");
 
 const modalButton = document.getElementById("modalButton"); // # w/querySelector
@@ -9,16 +10,22 @@ console.log("closeModalButton", closeModalButton);
 
 console.log("modalButton", modalButton);
 
-modalButton.addEventListener("click", function () {
-  if (dataLoaded) {
-    return;
-  }
-  console.log("clicked button!");
-  modalContainer.classList.remove("hidden");
-  utils.loadData(function() {
-    dataLoaded = true
+function initModalButton() {
+  return new Promise((resolve) => {
+    modalButton.addEventListener("click", function () {
+      if (dataLoaded) {
+        return;
+      }
+      console.log("clicked button!");
+      modalContainer.classList.remove("hidden");
+      utils.loadData(function() {
+        dataLoaded = true
+        resolve()
+      })
+    });
   })
-});
+}
+
 
 closeModalButton[0].addEventListener("click", function () {
   console.log("clicked close modal button!");
@@ -98,15 +105,21 @@ const utils = {
         gridContainer.innerHTML = response;
         modalContainer.classList.add("hidden");
         if (typeof callback === "function")
-        callback()
-      })
-      console.log("Data loaded")
-    }, 1000) 
-  
+        return response
+      }),
+    console.log("Data loaded")
+  }, 1000) 
+  callback()
+    
   }
 }
 
 let dataLoaded = false
+
+console.log("BEFORE initModalButton is called");
+await initModalButton()
+console.log("AFTER initModalButton is called");
+})()
 
 
 
