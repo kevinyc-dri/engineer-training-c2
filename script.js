@@ -11,11 +11,13 @@ console.log("modalButton", modalButton);
 
 modalButton.addEventListener("click", function () {
   if (dataLoaded) {
-    return this.loadData // Friday discussion different ways
+    return;
   }
   console.log("clicked button!");
   modalContainer.classList.remove("hidden");
-  utils.loadData()
+  utils.loadData(function() {
+    dataLoaded = true
+  })
 });
 
 closeModalButton[0].addEventListener("click", function () {
@@ -88,16 +90,18 @@ const utils = {
       resolve(response)
     })
   },
-  loadData() {
+  loadData(callback) {
     const gridContainer = document.querySelector('.grid-container')
     setTimeout(() => {
       this.renderData().then((response) => {
         dataLoaded = true
         gridContainer.innerHTML = response;
         modalContainer.classList.add("hidden");
+        if (typeof callback === "function")
+        callback()
       })
       console.log("Data loaded")
-    }, 1000)
+    }, 1000) 
   
   }
 }
@@ -106,5 +110,3 @@ let dataLoaded = false
 
 
 
-// listItem.innerHTML = `<li class="grid-container"><i class="bi bi-check-circle-fill"></i><a href="${e.link}">${e.title}</a>`;
-// listElement.prepend(listItem)
