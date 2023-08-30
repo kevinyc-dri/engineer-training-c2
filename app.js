@@ -15,7 +15,11 @@ router.get('/about',function(req,res){
 router.get('/sitemap',function(req,res){
   res.sendFile(path.join(__dirname+'/sitemap.html'));
 });
- 
+
+router.get('/getJiraTickets', function(req, res){
+  res.json({ jirasObject: [] })
+})
+
 //add the router
 app.use('/', router);
 app.use(express.static('public'))
