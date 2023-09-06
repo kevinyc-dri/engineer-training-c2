@@ -12,13 +12,13 @@ console.log("modalButton", modalButton);
 
 function initModalButton() {
   return new Promise((resolve) => {
-    modalButton.addEventListener("click", function () {
+    modalButton.addEventListener("click", async () => {
+      modalContainer.classList.remove("hidden");
+      console.log("clicked button!");
       if (dataLoaded) {
         return;
       }
-      console.log("clicked button!");
-      modalContainer.classList.remove("hidden");
-      utils.loadData(function() {
+      utils.loadData(() => {
         dataLoaded = true
         resolve()
       })
@@ -26,11 +26,10 @@ function initModalButton() {
   })
 }
 
-
 closeModalButton[0].addEventListener("click", function () {
   console.log("clicked close modal button!");
+  modalContainer.classList.toggle("hidden");
 });
-
 
 const jiraTitles = [
   "Create a public repository under your GitHub account",
@@ -54,17 +53,17 @@ class JiraHandler {
     this.titles = titles;
     this.jiraObject = this.createJiraObject();
   }
+
   createJiraObject(){
     let jirasArray = []; 
-    const jiraTemplate = { icon: "bi bi-check-circle-fill" }
 
+    const jiraTemplate = { icon: "bi bi-check-circle-fill" }
     const errorJiraTemplate = { icon: "bi bi-x-circle"}
 
     function getRandomNumber() {
       return Math.floor(Math.random() * 3);
   }
   
-
     console.log(jirasArray)
     for (let i = 0; i < this.titles.length; i++) {
       const jiraObject = {
@@ -81,9 +80,10 @@ class JiraHandler {
 } 
 
 const jiraHandler = new JiraHandler(jiraTitles, jiraLinks);
+const gridContainer = document.querySelector('.grid-container')
 
 const utils = {
-  renderData(){
+  renderData: function() {
     return new Promise((resolve) => {
       let response = ''
       jiraHandler.jiraObject.forEach(e => {
@@ -97,8 +97,10 @@ const utils = {
       resolve(response)
     })
   },
-  loadData(callback) {
-    const gridContainer = document.querySelector('.grid-container')
+  loadData: async function (callback) {
+    const response = await fetch('/getJiraTickets');
+    const data = await response.json();
+    console.log("data", data);
     setTimeout(() => {
       this.renderData().then((response) => {
         dataLoaded = true
@@ -110,7 +112,6 @@ const utils = {
     console.log("Data loaded")
   }, 1000) 
   callback()
-    
   }
 }
 
