@@ -2,6 +2,7 @@ const express = require('express');
 const app = express();
 const path = require('path');
 const router = express.Router();
+const dataHandler = require('./dataHandler');
  
 router.get('/',function(req,res){
   res.sendFile(path.join(__dirname+'/index.html'));
@@ -17,7 +18,7 @@ router.get('/sitemap',function(req,res){
 });
 
 router.get('/getJiraTickets', function(req, res){
-  res.json({ jirasObject: [] })
+  res.json({ jirasObject: dataHandler.jiraObject })
 })
 
 //add the router
