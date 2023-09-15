@@ -14,24 +14,22 @@ const jiraTitles = [
     "https://totalwine.atlassian.net/browse/TT-19",
   ];
 
+  const jiraTemplate = { icon: "bi bi-check-circle-fill" }
+  const errorJiraTemplate = { icon: "bi bi-x-circle"}
+
   class JiraHandler {
     constructor(links, titles) {
       this.links = links;
       this.titles = titles;
-      this.jiraObject = this.createJiraObject();
+      this.jiraObject = []
+      this.createJiraObject();
     }
   
     createJiraObject(){
-      let jirasArray = []; 
-  
-      const jiraTemplate = { icon: "bi bi-check-circle-fill" }
-      const errorJiraTemplate = { icon: "bi bi-x-circle"}
-  
       function getRandomNumber() {
         return Math.floor(Math.random() * 3);
     }
-    
-      console.log(jirasArray)
+
       for (let i = 0; i < this.titles.length; i++) {
         const jiraObject = {
           title: this.titles[i],
@@ -39,10 +37,8 @@ const jiraTitles = [
         };
         const useErrorTemplate = getRandomNumber() === 0;
         const template = useErrorTemplate ? errorJiraTemplate : jiraTemplate;
-       
-        jirasArray.push({...jiraTemplate,...jiraObject,...template})
+        this.jiraObject.push({...jiraTemplate,...jiraObject,...template})
       }
-      return jirasArray
     }
   } 
 
