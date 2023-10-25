@@ -16,13 +16,13 @@ const octokit = new Octokit({
   }
 });
 
-octokit.rest.repos.listCommits({
-  owner: "kevinyc-dri",
-  repo: "engineering-training-c2",
-})
-  .then((response) => {
-    console.log(response);
-  });
+// octokit.rest.repos.listCommits({
+//   owner: "kevinyc-dri",
+//   repo: "engineering-training-c2",
+// })
+//   .then((response) => {
+//     console.log(response);
+//   });
 
 const jiraTitles = [
   "Create a public repository under your GitHub account",
@@ -49,6 +49,7 @@ class JiraHandler {
     this.titles = titles;
     this.jiraObject = []
     this.createJiraObject();
+    this.fetchGitHubData();
   }
 
   createJiraObject() {
@@ -66,6 +67,23 @@ class JiraHandler {
       this.jiraObject.push({ ...jiraTemplate, ...jiraObject, ...template })
     }
   }
+  async fetchGitHubData() {
+    return new Promise(async (resolve) => {
+        const commits = await octokit.rest.repos.listCommits({
+            owner: "kevinyc-dri",
+            repo: "engineer-training-c2",
+        })
+        resolve(commits)
+
+    })
+        .then((listOfCommits) => {
+            console.log(listOfCommits);
+            for (let i = 0; i < listOfCommits.data.length; i++) {
+                console.log("Commit message: " + listOfCommits.data[i].commit.message)
+            }
+        })
+
+}
 }
 
 const jiraHandler = new JiraHandler(jiraTitles, jiraLinks);
