@@ -1,4 +1,6 @@
 const { Octokit } = require("@octokit/rest");
+var JiraApi = require('jira-client');
+
 
 const octokit = new Octokit({
   auth: process.env.GITHUB_TOKEN,
@@ -23,6 +25,33 @@ const octokit = new Octokit({
 //   .then((response) => {
 //     console.log(response);
 //   });
+
+// Initialize
+var jira = new JiraApi({
+  protocol: 'https',
+  host: process.env.JIRA_HOST,
+  username: process.env.JIRA_USERNAME,
+  password: process.env.JIRA_TOKEN,
+  apiVersion: '2',
+  strictSSL: true
+});
+
+async function findJiraIssue(issueNumber) {
+  return new Promise(async (resolve) => {
+      jira.findIssue(issueNumber)
+          .then((issue) => {
+              const { summary } = issue.fields
+              console.log('Summary: ' + summary)
+              resolve({
+                  title: summary,
+                  link: `https://totalwine.atlassian.net/browse/${issueNumber}`
+              })
+          })
+          .catch((err) => {
+              console.error(err)
+          })
+  })
+}
 
 const jiraTitles = [
   "Create a public repository under your GitHub account",
@@ -76,14 +105,34 @@ class JiraHandler {
         resolve(commits)
 
     })
-        .then((listOfCommits) => {
-            console.log(listOfCommits);
-            for (let i = 0; i < listOfCommits.data.length; i++) {
-                console.log("Commit message: " + listOfCommits.data[i].commit.message)
-            }
-        })
-
 }
+
+retrieveJiraInfo() {
+  this.fetchGitHubData().then((listOfCommits) => {
+      let jiraTicketNum = []
+      let promises = []
+      const regEx = /([A-Z][A-Z0-9]+-[0-9]+)/g
+      for (let i = 0; i < listOfCommits.data.length; i++) {
+          let ticketNum = listOfCommits.data[i].commit.message.match(regEx)
+          let indx = jiraTicketNum.indexOf(ticketNum)
+
+          if (ticketNum != null && indx === -1) {
+              jiraTicketNum.push(ticketNum)
+          } else {
+              console.log(ticketNum + ' Jira ticket number already exists or No Ticket Number')
+          }
+      }
+      console.log(jiraTicketNum)
+
+      for (let i = 0; i < jiraTicketNum.length; i++) {
+          promises.push(findJiraIssue(jiraTicketNum[i]));
+      }
+      Promise.all(promises).then((values) => {
+          console.log(values);
+      })
+  })
+}
+
 }
 
 const jiraHandler = new JiraHandler(jiraTitles, jiraLinks);
