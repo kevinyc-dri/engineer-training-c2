@@ -96,15 +96,23 @@ class JiraHandler {
       this.jiraObject.push({ ...jiraTemplate, ...jiraObject, ...template })
     }
   }
-  async fetchGitHubData() {
-    return new Promise(async (resolve) => {
-        const commits = await octokit.rest.repos.listCommits({
-            owner: "kevinyc-dri",
-            repo: "engineer-training-c2",
-        })
-        resolve(commits)
 
-    })
+async fetchGitHubData() {
+  return new Promise(async (resolve) => {
+      const commits = await octokit.rest.repos.listCommits({
+          owner: "kevinyc-dri",
+          repo: "engineer-training-c2",
+      })
+      resolve(commits)
+
+  })
+      .then((listOfCommits) => {
+          console.log(listOfCommits);
+          for (let i = 0; i < listOfCommits.data.length; i++) {
+              console.log("Commit message: " + listOfCommits.data[i].commit.message)
+          }
+      })
+
 }
 
 retrieveJiraInfo() {
