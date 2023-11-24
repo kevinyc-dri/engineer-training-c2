@@ -6,8 +6,8 @@ const octokit = new Octokit({
   auth: process.env.GITHUB_TOKEN,
   baseUrl: 'https://api.github.com',
   log: {
-    debug: () => { },
-    info: () => { },
+    debug: () => {},
+    info: () => {},
     warn: console.warn,
     error: console.error
   },
@@ -17,14 +17,6 @@ const octokit = new Octokit({
     timeout: 0
   }
 });
-
-// octokit.rest.repos.listCommits({
-//   owner: "kevinyc-dri",
-//   repo: "engineering-training-c2",
-// })
-//   .then((response) => {
-//     console.log(response);
-//   });
 
 // Initialize
 var jira = new JiraApi({
@@ -38,18 +30,18 @@ var jira = new JiraApi({
 
 async function findJiraIssue(issueNumber) {
   return new Promise(async (resolve) => {
-      jira.findIssue(issueNumber)
-          .then((issue) => {
-              const { summary } = issue.fields
-              console.log('Summary: ' + summary)
-              resolve({
-                  title: summary,
-                  link: `https://totalwine.atlassian.net/browse/${issueNumber}`
-              })
-          })
-          .catch((err) => {
-              console.error(err)
-          })
+    jira.findIssue(issueNumber)
+      .then((issue) => {
+        const { summary } = issue.fields
+        console.log('Summary: ' + summary)
+        resolve({
+          title: summary,
+          link: `https://totalwine.atlassian.net/browse/${issueNumber}`
+        })
+      })
+      .catch((err) => {
+        console.error(err)
+      })
   })
 }
 
@@ -71,77 +63,75 @@ const jiraLinks = [
 
 const jiraTemplate = { icon: "bi bi-check-circle-fill" }
 const errorJiraTemplate = { icon: "bi bi-x-circle" }
+function getRandomNum(max) {
+  return Math.floor(Math.random() * max);
+}
+function getIcon() {
+  let rNum = getRandomNum(3);
+  return (rNum >= 1 ? jiraTemplate : errorJiraTemplate);
+}
 
 class JiraHandler {
   constructor(links, titles) {
+    this.jiraObject = []
+    this.jiraTicketNum = []
     this.links = links;
     this.titles = titles;
-    this.jiraObject = []
     this.createJiraObject();
     this.fetchGitHubData();
+    this.retrieveJiraInfo()
   }
 
   createJiraObject() {
-    function getRandomNumber() {
-      return Math.floor(Math.random() * 3);
-    }
-
-    for (let i = 0; i < this.titles.length; i++) {
-      const jiraObject = {
-        title: this.titles[i],
+    for (let i = 0; i < this.links.length; i++) {
+      let icon = getIcon();
+      console.log(icon)
+      this.jiraObject.push({
         link: this.links[i],
-      };
-      const useErrorTemplate = getRandomNumber() === 0;
-      const template = useErrorTemplate ? errorJiraTemplate : jiraTemplate;
-      this.jiraObject.push({ ...jiraTemplate, ...jiraObject, ...template })
+        title: this.titles[i],
+        ...icon,
+      })
     }
   }
 
-async fetchGitHubData() {
-  return new Promise(async (resolve) => {
+  async fetchGitHubData() {
+    return new Promise(async (resolve) => {
       const commits = await octokit.rest.repos.listCommits({
-          owner: "kevinyc-dri",
-          repo: "engineer-training-c2",
+        owner: "kevinyc-dri",
+        repo: "engineer-training-c2",
       })
       resolve(commits)
 
-  })
-      .then((listOfCommits) => {
-          console.log(listOfCommits);
-          for (let i = 0; i < listOfCommits.data.length; i++) {
-              console.log("Commit message: " + listOfCommits.data[i].commit.message)
-          }
-      })
+    })
+  }
 
-}
-
-retrieveJiraInfo() {
-  this.fetchGitHubData().then((listOfCommits) => {
+  retrieveJiraInfo() {
+    this.fetchGitHubData().then((listOfCommits) => {
       let jiraTicketNum = []
       let promises = []
       const regEx = /([A-Z][A-Z0-9]+-[0-9]+)/g
       for (let i = 0; i < listOfCommits.data.length; i++) {
-          let ticketNum = listOfCommits.data[i].commit.message.match(regEx)
-          let indx = jiraTicketNum.indexOf(ticketNum)
+        let ticketNum = listOfCommits.data[i].commit.message.match(regEx)
+        let indx = jiraTicketNum.indexOf(ticketNum)
 
-          if (ticketNum != null && indx === -1) {
-              jiraTicketNum.push(ticketNum)
-          } else {
-              console.log(ticketNum + ' Jira ticket number already exists or No Ticket Number')
-          }
+        if (ticketNum != null && indx === -1) {
+          jiraTicketNum.push(ticketNum)
+        } else {
+          console.log(ticketNum + ' Jira ticket number already exists or No Ticket Number')
+        }
       }
       console.log(jiraTicketNum)
 
       for (let i = 0; i < jiraTicketNum.length; i++) {
-          promises.push(findJiraIssue(jiraTicketNum[i]));
+        promises.push(findJiraIssue(jiraTicketNum[i]));
       }
       Promise.all(promises).then((values) => {
-          console.log(values);
+        console.log(values);
       })
-  })
+    })
+  }
 }
 
-}
+const jiraHandler = new JiraHandler(jiraLinks, jiraTitles);
 
-const jiraHandler = new JiraHandler(jiraTitles, jiraLinks);
 module.exports = jiraHandler;
